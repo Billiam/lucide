@@ -13,6 +13,10 @@ const outputDirs = {
 
 async function init() {
   try {
+    for (const directory of Object.keys(outputDirs)) {
+      await fs.mkdir(`./${directory}`);
+    }
+
     const files = await fs.readdir(inputDir);
     for (const file of files) {
       const icon = await fs.readFile(`${inputDir}${file}`);
@@ -25,7 +29,7 @@ async function init() {
         const outlinedWithoutAttrs = await parse(outlined, {
           transformNode: transformBackwards,
         });
-        await fs.outputFile(`./${directory}/${file}`, stringify(outlinedWithoutAttrs));
+        await fs.writeFile(`./${directory}/${file}`, stringify(outlinedWithoutAttrs));
       }
     }
   } catch (err) {
